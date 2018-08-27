@@ -1,0 +1,161 @@
+#!/usr/bin/python2.7
+#./parse_board_profile json_path
+
+import re
+import json
+import sys, os
+import shutil
+
+
+def parse_hardware_json(filename):
+    """
+    :param filename: Hardware_Function_Profile.json's Path
+    :return board driver(list)
+    """
+    board_list = []
+    board = ""
+    fd = open(filename, 'r')
+    hardware_profile = fd.read()
+    hardware_msg = json.loads(hardware_profile)
+    for line in hardware_msg:
+        i = line.encode('ascii')
+        if i == 'boards':
+            for msg in hardware_msg[i]:
+                if 'partno' in msg:
+                    board_name = msg['partno'].encode('ascii')
+                    if "-" in board_name:
+                        count = board_name.count("-")
+                        pecice = board_name.split("-", count)
+                        for index in range(0, len(pecice)):
+                            board += pecice[index]
+                    else:
+                        board = board_name
+                    board_list.append(board)
+                    board = ""
+        if i == "base_board":
+            base_board = hardware_msg[i]['partno'].encode('ascii')
+            print "base_board:"+base_board
+            if "-" in base_board:
+                num = base_board.count("-")
+                str = base_board.split("-", num)
+                for index in range(0, len(str)):
+                    board += str[index]
+            elif "_" in base_board:
+                num = base_board.count("_")
+                str = base_board.split("_", num)
+                for count0 in range(0, len(str)):
+                    board += str[count0]
+            else:
+                board = base_board
+            board_list.append(board)
+            board = ""
+    print board_list
+    return board_list
+
+
+def match_board_driver(board_list, init_path, obj_path):
+    """
+    :param board_list: list of board name
+    :return:import list(list) list of import files
+    """
+    os.chdir(obj_path)
+    if os.path.exists("__init__.py"):
+        os.remove("__init__.py")
+    os.mknod("__init__.py")
+    new_init = open("__init__.py", "w")
+
+    import_list = []
+    init_file = open(init_path, 'r')
+    for import_msg in init_file.readlines():
+        for board in board_list:
+            if board in import_msg:
+                import_list.append(import_msg)
+                new_init.write(import_msg)
+    init_file.close()
+    new_init.close()
+    return import_list
+
+
+def parser_driver_path(import_msg, obj_path):
+    """
+    :param import_msg: list of import files
+    :return:
+    """
+    path_list = []
+    for msg in import_msg:
+        board_path = msg.split('.', 3)
+        temp = board_path[-2]
+        #os.chdir(obj_path+"/board")
+        #os.makedirs(temp)
+        temp = obj_path+"/board/"+temp
+        board_path = board_path[1:-1]
+        str = '/'
+        board_driver = str.join(board_path)
+        tup_path = tuple([board_driver, temp])
+        path_list.append(tup_path)
+    return path_list
+
+
+def parse_cmd_json(system_file):
+    """
+    :param system_file: system cmd json
+    :return: cmd
+    """
+    cmd_list = []
+    fd = open(system_file, 'r')
+    for cmd in fd.readlines():
+        cmd_config = json.loads(cmd)
+        print cmd_config['cmd']
+        cmd_list.append(cmd_config['cmd'].encode('ascii'))
+    fd.close()
+    return cmd_list
+
+
+def merge_handle_json(system_file, project_file):
+    """
+    :param system_file: system cmd json
+    :param project_file: project cmd json
+    :return:
+    """
+    """system_fd = open(system_file, "r")
+    project_fd = open(project_file, "a+")
+    system_cmd = system_fd.read()
+    project_fd.write("#system \n")
+    project_fd.write(system_cmd)
+    system_fd.close()
+    project_fd.close()"""
+    system_fd = open(system_file, "a+")
+    project_fd = open(project_file, "r")
+    project_cmd = project_fd.read()
+    system_fd.write(project_cmd)
+    system_fd.close()
+    project_fd.close()
+    os.remove(project_file)
+
+
+if __name__ == '__main__':
+    PROJECT_FOLDER = sys.argv[1]
+    STORAGE_FOLDER = sys.argv[2]
+    PROJECT_NAME = sys.argv[3]
+    hardware_function_profile = PROJECT_FOLDER+"/projects/"+PROJECT_NAME+"/Hardware_Function_Profile.json"
+    board_init_file = PROJECT_FOLDER+"/ee/board/__init__.py"
+    source_path = PROJECT_FOLDER+"/ee"
+    object_path = STORAGE_FOLDER+"/ee"
+
+    board_name = parse_hardware_json(hardware_function_profile)
+
+    board_import = match_board_driver(board_name, board_init_file, object_path)
+    if os.path.exists(object_path+"/board"):
+        shutil.rmtree(object_path+"/board")
+    path = parser_driver_path(board_import, object_path)
+    for dirv in path:
+        board_path = source_path+'/'+dirv[0]
+        if not os.path.exists(dirv[1]):
+            shutil.copytree(board_path, dirv[1])
+    shutil.copy(object_path+"/__init__.py", object_path+"/board/")
+    os.remove(object_path+"/__init__.py")
+    os.mknod(object_path+"/__init__.py")
+
+    system_cmd_json = STORAGE_FOLDER+"/command/handle/handles_config.json"
+    project_cmd_json = STORAGE_FOLDER+"/command/handle/"+PROJECT_NAME+"/handles_config.json"
+    merge_handle_json(system_cmd_json, project_cmd_json)

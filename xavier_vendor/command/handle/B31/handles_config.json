@@ -1,0 +1,78 @@
+#uart
+{"cmd":"uart config",			"module":"uart","handle":"uart_config_handle",	"description":"config uart"}
+{"cmd":"uart close",         "module":"uart","handle":"uart_close_handle",    "description":"close uart"}
+#io
+{"cmd": "io set",                           "module":"io",                    "handle": "io_set_handle",                       "description":"set io output high or low level"}
+{"cmd": "io read",                        "module":"io",                    "handle": "io_read_handle",                    "description":"read io output or input state"}
+{"cmd": "io dir set",                     "module":"io",                    "handle": "io_dir_set_handle",                 "description":"configure io output or input dir"}
+{"cmd": "io dir read",                  "module":"io",                    "handle": "io_dir_read_handle",              "description":"read io dir configuration"}
+{"cmd": "io chip set",                  "module":"io",                    "handle": "io_chip_set_handle",               "description":"set io output high or low level through io chip serial-number"}
+{"cmd": "io chip read",               "module":"io",                    "handle": "io_chip_read_handle",            "description":"read io output or input state through io chip serial-number"}
+{"cmd": "io chip dir set",            "module":"io",                    "handle": "io_chip_dir_set_handle",         "description":"configure io output or input dir through io chip serial-number"}
+{"cmd": "io chip dir read",         "module":"io",                    "handle": "io_chip_dir_read_handle",      "description":"read io dir configuration through io chip serial-number"}
+
+#eeprom
+{"cmd": "eeprom read",                      "module":"eeprom",           "handle": "eeprom_read_handle",                       "description":"eeprom read hex date"}
+{"cmd": "eeprom write",                     "module":"eeprom",           "handle": "eeprom_write_handle",                       "description":"eeprom write hex date"}
+{"cmd": "eeprom string read",           "module":"eeprom",           "handle": "eeprom_string_read_handle",            "description":"eeprom read string date"}
+{"cmd": "eeprom string write",          "module":"eeprom",           "handle": "eeprom_string_write_handle",           "description":"eeprom write string date"}
+#dac
+{"cmd": "dac set",                      "module":"voltage_output",           "handle": "dac_voltage_set_handle",                       "description":"set dac output voltage"}
+{"cmd": "ad5761 register write",                      "module":"voltage_output",           "handle": "dac_5761_write_register_handle",                       "description":"write ad5761 register"}
+#frequency
+{"cmd": "frequency measure",                      "module":"bp288_signal_meter",           "handle": "frequency_measure_handle",                       "description":"measure frequency"}
+#pulse
+{"cmd":"wave measure start",   "module":"bp288_signal_meter",        "handle":"wave_measure_start_handle",      "description":"wave measure start trigger"}
+{"cmd":"wave measure get",   "module":"bp288_signal_meter",        "handle":"wave_measure_get_handle",      "description":"get wave measure value"}
+{"cmd":"protect wave measure",   "module":"bp288_signal_meter",        "handle":"protectwavemeasure_handle",      "description":"protect wave measure"}
+
+#{"cmd":"protect flag get",   "module":"bp288_signal_meter",        "handle":"protect_flag_status_handle",      "description":"get gpio status"}
+{"cmd":"delay time measure",   "module":"bp288_signal_meter",        "handle":"delay_measure_handle",      "description":"delay time measure"}
+#{"cmd": "cs5381 voltage upload",                      "module":"bp288_signal_meter",           "handle": "audio_measure_handle",                       "description":"upload  cs5381 value   "}
+{"cmd": "audio datalogger open",                      "module":"bp288_signal_meter",           "handle": "audio_datalogger_open_handle",                       "description":" start upload  cs5381 value   "}
+{"cmd": "audio datalogger close",                      "module":"bp288_signal_meter",           "handle": "audio_datalogger_close_handle",                       "description":" stop upload  cs5381 value   "}
+
+#adc measure
+#{"cmd": "adc voltage read",                      "module":"voltage_read",           "handle": "adc_voltage_read_handle",                       "description":"read adc  voltage value "}
+{"cmd": "ad7175 voltage read",                      "module":"voltage_read",           "handle": "ad7175_voltage_read_handle",                       "description":"read ad7175  voltage value "}
+{"cmd": "audio upload",                      "module":"bp288_datalogger",           "handle": "audio_upload_handle",                       "description":"continue read ad7175 chan0  voltage value "}
+{"cmd": "ina231 register read",                      "module":"ina231",           "handle": "ina231_register_read_handle",                       "description":"ina231 register read "}
+{"cmd": "ina231 register write",                      "module":"ina231",           "handle": "ina231_register_write_handle",                       "description":"ina231 register write "}
+{"cmd": "ina231 voltage read",                      "module":"ina231",           "handle": "ina231_voltage_read_handle",                       "description":"ina231 voltage read "}
+#{"cmd": "ina231 config",                      "module":"ina231",           "handle": "ina231_config_handle",                       "description":"ina231  configuration "}
+
+#bp288 datalogger
+{"cmd":"datalogger open",           "module":"bp288_datalogger",            "handle":"datalogger_open_handle",        "description":"open datalogger"}
+{"cmd":"datalogger close",          "module":"bp288_datalogger",            "handle":"datalogger_close_handle",        "description":"close datalogger"}
+{"cmd":"datalogger reset",          "module":"bp288_datalogger",            "handle":"datalogger_reset_handle",        "description":"reset datalogger"}
+{"cmd":"datalogger write",          "module":"bp288_datalogger",            "handle":"datalogger_write_handle",        "description":"write data to ADC chip registor"}
+{"cmd":"datalogger read",           "module":"bp288_datalogger",            "handle":"datalogger_read_handle",          "description":"read data to ADC chip registor"}
+{"cmd":"datalogger measure",    "module":"bp288_datalogger",            "handle":"datalogger_measure_handle",  "description":"datalogger measure"}
+{"cmd":"datalogger samplerate set",          "module":"bp288_datalogger",            "handle":"datalogger_samplerate_set_handle",        "description":"datalogger samplerate set"}
+{"cmd":"datalogger samplerate get",          "module":"bp288_datalogger",            "handle":"datalogger_samplerate_get_handle",        "description":"datalogger samplerate get"}
+{"cmd":"datalogger reset",          "module":"bp288_datalogger",            "handle":"datalogger_reset_handle",        "description":"reset datalogger"}
+#iic 
+{"cmd": "i2c rdwr",                      "module":"i2c",           "handle": "i2c_rdwr_handle",                       "description":"ap25b2aae i2c read and write "}
+{"cmd": "i2c read", 		   		"module":"i2c", 			"handle": "i2c_read_handle", 	"description":"ap25b2aae i2c read"}
+{"cmd": "i2c write", 		   		"module":"i2c", 			"handle": "i2c_write_handle", 	"description":"ap25b2aae i2c write"}
+#temperature
+{"cmd": "temperature read", 		   		"module":"temperature", 			"handle": "temperature_read_handle", 	"description":"read temperature from dps18b20 chip"}
+#aid
+{"cmd":"aid init",   				"module":"AID",        "handle":"aid_init_handle",      		"description":"aid slave init"}
+{"cmd":"aid disable",   			"module":"AID",        "handle":"aid_disable_handle",      	"description":"aid slave disable"}
+{"cmd":"aid config",   				"module":"AID",        "handle":"aid_config_handle",      		"description":"aid data config"}
+
+#mcu control
+{"cmd": "mcu io set", 	"module":"mcu_io", "handle": "mcu_io_set_handle", "description":"set mcu  io status"}
+{"cmd":"swd rst ctrl set",      "module":"mcu_io",         "handle":"swd_rst_ctrl_set_handle",         "description":"swd rst control"}
+
+#fwdl
+{"cmd":"programmer id",     "module":"fwdl",         "handle":"programmer_id_handle",           "description":"fwdl read id"}
+{"cmd":"programmer",     "module":"fwdl",            "handle":"programmer_handle",                  "description":"fwdl executing"}
+{"cmd":"programmer only",     "module":"fwdl",            "handle":"programmer_only_handle",                "description":"fwdl executing only"}
+{"cmd":"programmer erase",     "module":"fwdl",         "handle":"programmer_erase_handle",               "description":"programmer erase"}
+{"cmd":"programmer checkout",      "module":"fwdl",         "handle":"programmer_checkout_handle",         "description":"programmer checkout"}
+{"cmd":"programmer abort",      "module":"fwdl",         "handle":"programmer_abort_handle",         "description":"programmer abort "}
+{"cmd":"firmware check",        "module":"fwdl",         "handle":"programmer_firmware_check_handle",           "description":"firmware check"}
+{"cmd":"firmware erase",      "module":"fwdl",         "handle":"programmer_firmware_erase_handle",         "description":"firmware erase"}
+

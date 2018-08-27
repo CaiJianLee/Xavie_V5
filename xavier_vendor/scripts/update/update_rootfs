@@ -1,0 +1,73 @@
+#########################################################################
+# File Name: update_rootfs.sh
+# Author: zhen
+# mail: qingzhen.zhu@gzseeing.com 
+# Created Time: 2017年01月19日 星期四 16时14分04秒
+#########################################################################
+#!/bin/bash
+
+# 获取当前文件的目录
+LOCAL_FILE=$(cd "$(dirname "$0")";pwd)
+
+UP_DATA_FOLDER=$1
+
+if [ $# -lt 1 ]; then
+	echo "input param less then 1"
+	echo "USAGE: $0 [updata folder]"
+
+	echo "	EXAMPLE: $0 /opt/seeing/tftpboot"
+	exit
+fi
+function check_file_exist(){
+	if [ ! -f $1 ];then
+		echo "$1 not exist"
+		/bin/bash $LOCAL_FILE/../update_log.sh "$1 not exist"
+		return 0
+	else
+		echo "$1 exist"
+		/bin/bash $LOCAL_FILE/../update_log.sh "$1 exist"
+		PACK_FILE+=" $1"
+		return 1
+	fi
+}
+echo "  $LOCAL_FILE"
+cd $UP_DATA_FOLDER
+
+check_file_exist rootfs*.tar.gz
+
+if [  -n "$PACK_FILE" ];then
+	echo $PACK_FILE
+	/bin/bash $LOCAL_FILE/../update_log.sh "$PACK_FILE update start ..."
+
+	mount /dev/mmcblk0p3 /mnt
+	cp $PACK_FILE /mnt/
+	if [ -c /dev/mtd0 ];then
+		cp /dev/mtd0 /mnt/BOOT.bin
+	else
+		[ ! -d /tmp ] && mkdir -p /tmp
+		mount /dev/mmcblk0p1 /tmp
+		cp /tmp/zImage /mnt
+		sync 
+		umount /tmp
+	fi
+	cp /opt/seeing/app/scripts/update/update_rootfs_3_part /mnt/update.sh
+	sync
+	umount /mnt
+
+	if test -f "/opt/seeing/BOOT.bin" || test -f "/opt/seeing/update/BOOT.bin" ;then
+		flashcp -v /opt/seeing/BOOT.bin /dev/mtd0 || flashcp -v /opt/seeing/update/BOOT.bin /dev/mtd0
+	elif [ -f "/opt/seeing/update/zImage" ];then
+		mount /dev/mmcblk0p1 /mnt
+		cp /opt/seeing/update/zImage /mnt
+		sync 
+		umount /mnt
+	else
+		echo "/opt/seeing/ directory do not exist BOOT.bin(xavier platform) or zImage(335x platform) ."
+		echo "Not to upgrade the file system."
+	fi
+	sync
+	/bin/bash $LOCAL_FILE/../update_log.sh "$PACK_FILE update end"
+else
+	echo "not have \"rootfs.tar.gz\" file"
+fi
+

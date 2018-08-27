@@ -1,0 +1,11 @@
+fpga=v0.0
+devicetree=0.0
+uImage=v4.0.0.02
+rootfs=2.1
+BOOT=2015.07.01
+project=B31
+compile_time=2018-05-17--04:16:03
+
+
+
+seeing=5.00.00_bp

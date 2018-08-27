@@ -1,0 +1,318 @@
+{
+    "project": "N131",
+    "base_board": { "partno": "Debug-002-001", "id": "instrument"},
+    "hardware_version": "Xavier-001-005A",
+    
+    "boards": [
+        {"partno": "Scope-002-001A", "id": "datalogger",                
+             "daq_channel":[
+                {"type": "datalogger", "ch": 0, "id": "current", "port": 7604, "chipnum": 1},
+                {"type": "datalogger", "ch": 1, "id": "voltage", "port": 7603, "chipnum": 1}
+            ],
+            "adc": {"partno": "AD7177", "path": "AXI4_DATALOGGER_AD7177", "samplerate": "1000Hz", "vref": "2500mV", "chipnum": 1},
+            "eeprom": {"partno": "CAT24C08","id": "datalogger", "bus": "EEPROM_IIC", "switch_channel": "Datalogger-1", "addr": "0x53"}
+         },
+         
+        {"partno": "Dmm-001-001", "id": "dmm", 
+            "adc": {"partno": "AD7175", "path": "AXI4_DMM_AD7175","samplerate":"5Hz","vref": "5000mV"},
+            "io": {"BIT1": "bit35", "BIT2": "bit37", "BIT3": "bit36"},
+            "eeprom": {"partno": "CAT24C08","id": "dmm", "bus": "EEPROM_IIC", "switch_channel": "DMM_1","addr": "0x51"}
+		},
+
+        {"partno": "Psu-001-001", "id": "power", 
+			"digipot":{"partno": "AD5272","bus": "EEPROM_IIC", "switch_channel": "Power_DIGIPOT", "addr": "0x2C"},
+            "eeprom": {"partno": "CAT24C08","id": "power", "bus": "EEPROM_IIC", "switch_channel": "Power_EEPROM", "addr": "0x53"}
+		},
+
+        {"partno": "Vvo-001-001", "id": "voltage_output",
+			"dac1": {"id": "psu_DAC_1",  "channel": ["vo1", "vo2"]},
+			"dac2": {"id": "psu_DAC_2", "channel": ["vo3", "vo4"]},
+			"dac3": {"id": "freq_DAC_1", "channel": ["vo5", "vo6"]}
+		},
+
+        {"partno": "Vfreq-001-001", "id": "freq", 
+			"path": "AXI4_Signal_Meter_0", "ipcore": "Axi4SignalMeter","samplerate":"100000000Hz",
+            "vo": {"id": "voltage_output", "channel": "vo5"}
+		},
+
+		{"partno": "Eld-001-001", "id": "ELOAD1",
+			"dac": {"partno": "AD5667","addr": "0x0F", "bus": "ELOAD_IIC"},
+            "io": {"DAC_LDAC": "bit81", "DAC_CLR": "bit82", "A0": "bit83", "A1": "bit84", "A2": "bit85", "A3": "bit86", "EN": "bit87"},
+            "eeprom": {"partno": "CAT24C08","id": "ELOAD1","addr": "0x53", "bus": "ELOAD_IIC", "switch_channel": "none"}
+		},
+
+		{"partno": "Eld-001-001", "id": "ELOAD2",
+			"dac": {"partno": "AD5667","addr": "0x0F", "bus": "ELOAD_IIC"},
+            "io": {"DAC_LDAC": "bit81", "DAC_CLR": "bit82", "A0": "bit83", "A1": "bit84", "A2": "bit85", "A3": "bit86", "EN": "bit87"},
+            "eeprom": {"partno": "CAT24C08","id": "ELOAD2","addr": "0x57", "bus": "ELOAD_IIC", "switch_channel": "none"}
+		},
+
+
+
+        {"partno": "Spm-001-001", "id": "SPAM", "bus": "AXI4_SPAM_UART"},
+
+        {"partno": "Erb-001-001","id": "ERBIUM", 
+			"dac_1": {"path": "AXI4_ERBIUM_DAC_1", 
+                "function": {
+                    "sine": {"id": "AXI4_ERBIUM_SS_1", "ipcore": "Axi4SignalSource"},
+                    "square": {"id": "AXI4_ERBIUM_SS_1", "ipcore": "Axi4SignalSource"},
+                    "arbitrary": {"id": "AXI4_ERBIUM_SS_1", "ipcore": "Axi4SignalSource"}
+                }
+            },
+
+            "dac_2": {"path": "AXI4_ERBIUM_DAC_2", 
+                "function": {
+                    "sine": {"id": "AXI4_ERBIUM_SS_2", "ipcore": "Axi4SignalSource"},
+                    "square": {"id": "AXI4_ERBIUM_SS_2", "ipcore": "Axi4SignalSource"},
+                    "arbitrary": {"id": "AXI4_ERBIUM_SS_2", "ipcore": "Axi4SignalSource"}
+                }
+            },
+             
+            "adc": {"path": "AXI4_ERBIUM_ADC_1", 
+                "function": {
+                    "vpp": {"id": "AXI4_ERBIUM_SM_1", "ipcore": "Axi4SignalMeter"},
+                    "RMS": {"id": "AXI4_ERBIUM_SM_1", "ipcore": "Axi4SignalMeter"}
+                }
+            },
+
+            "eeprom": {"partno": "CAT24C08","id": "ERBIUM","addr": "0x50", "bus": "EEPROM_IIC","switch_channel": "BK"}
+		},
+
+        {"partno": "Prm-001-001","id": "Prometheus", 
+			"eeprom": {"partno": "CAT24C08","id": "Prometheus", "addr": "0x50", "bus": "EEPROM_IIC", "switch_channel": "CODEC_1"},
+            "codec_adc": {"path": "AXI4_AD7764",
+                "function": {
+                    "thdn": {"id": "AXI4_Audio_Analyzer", "ipcore": "Axi4AudioAnalyzer"},
+                    "freq": {"id": "AXI4_Audio_Analyzer", "ipcore": "Axi4AudioAnalyzer"},
+                    "vpp": {"id": "AXI4_Audio_Analyzer", "ipcore": "Axi4AudioAnalyzer"}               
+                }
+            }
+        }
+    ],
+
+    "chips": [
+        {"partno": "TCA9548", "id": "TCA9548_1", "addr": "0x71", "bus": "EEPROM_IIC", "switch_channel": "none",
+			"property": [
+				{"ch": 0, "id": "TB"},
+				{"ch": 1, "id": "DMM_1"},
+				{"ch": 2, "id": "CODEC_1"},
+				{"ch": 3, "id": "Datalogger_1"},
+				{"ch": 4, "id": "BK"},
+				{"ch": 5, "id": "Power_EEPROM"},
+				{"ch": 6, "id": "DIGIPOT"},
+				{"ch": 7, "id": "POWER_DIGIPOT"}
+			]
+		},
+
+        {"partno": "AD5667", "id": "psu_DAC_1", "addr": "0x00", "bus": "INSTRUMENT_IIC_1", "switch_channel": "none", "vref": "2500mv"},
+        {"partno": "AD5667", "id": "psu_DAC_2", "addr": "0x03", "bus": "INSTRUMENT_IIC_1", "switch_channel": "none", "vref": "2500mv"},
+        {"partno": "AD5667", "id": "freq_DAC_1", "addr": "0x00", "bus": "INSTRUMENT_IIC_2", "switch_channel": "none", "vref": "2500mv"},
+        {"partno":"CAT24C08","id":"TB_EEPROM", "addr": "0x50", "bus": "EEPROM_IIC", "switch_channel": "TB"},
+
+        {"partno": "CAT9555", "id": "cp1", 
+			"addr": "0x00", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit1", "dir": "input", "default": "0"},
+                {"pin": "2", "id": "bit2", "dir": "input", "default": "0"},
+                {"pin": "3", "id": "bit3", "dir": "input", "default": "0"},
+                {"pin": "4", "id": "bit4", "dir": "input", "default": "0"},
+                {"pin": "5", "id": "bit5", "dir": "input", "default": "0"},
+                {"pin": "6", "id": "bit6", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit7", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit8", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit9", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit10", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit11", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit12", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit13", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit14", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit15", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit16", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp2", 
+			"addr": "0x01", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit17", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit18", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit19", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit20", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit21", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit22", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit23", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit24", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit25", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit26", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit27", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit28", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit29", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit30", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit31", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit32", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp3", 
+			"addr": "0x02", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit33", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit34", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit35", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit36", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit37", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit38", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit39", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit40", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit41", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit42", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit43", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit44", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit45", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit46", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit47", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit48", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp4", 
+			"addr": "0x03", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit49", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit50", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit51", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit52", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit53", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit54", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit55", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit56", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit57", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit58", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit59", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit60", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit61", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit62", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit63", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit64", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp5", 
+			"addr": "0x04", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit65", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit66", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit67", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit68", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit69", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit70", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit71", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit72", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit73", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit74", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit75", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit76", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit77", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit78", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit79", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit80", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp6", 
+			"addr": "0x05", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit81", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit82", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit83", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit84", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit85", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit86", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit87", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit88", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit89", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit90", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit91", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit92", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit93", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit94", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit95", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit96", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp7", 
+			"addr": "0x06", "bus": "ps_i2c_0", "switch_channel": "none",
+                "property": [
+                {"pin": "1", "id": "bit97", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit98", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit99", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit100", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit101", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit102", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit103", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit104", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit105", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit106", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit107", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit108", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit109", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit110", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit111", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit112", "dir": "output", "default": "0"}
+             ]
+		},
+
+        {"partno": "CAT9555", "id": "cp8", 
+			"addr": "0x07", "bus": "ps_i2c_0", "switch_channel": "none",
+            "property": [
+                {"pin": "1", "id": "bit113", "dir": "output", "default": "0"},
+                {"pin": "2", "id": "bit114", "dir": "output", "default": "0"},
+                {"pin": "3", "id": "bit115", "dir": "output", "default": "0"},
+                {"pin": "4", "id": "bit116", "dir": "output", "default": "0"},
+                {"pin": "5", "id": "bit117", "dir": "output", "default": "0"},
+                {"pin": "6", "id": "bit118", "dir": "output", "default": "0"},
+                {"pin": "7", "id": "bit119", "dir": "output", "default": "0"},
+                {"pin": "8", "id": "bit120", "dir": "output", "default": "0"},
+                {"pin": "9", "id": "bit121", "dir": "output", "default": "0"},
+                {"pin": "10", "id": "bit122", "dir": "output", "default": "0"},
+                {"pin": "11", "id": "bit123", "dir": "output", "default": "0"},
+                {"pin": "12", "id": "bit124", "dir": "output", "default": "0"},
+                {"pin": "13", "id": "bit125", "dir": "output", "default": "0"},
+                {"pin": "14", "id": "bit126", "dir": "output", "default": "0"},
+                {"pin": "15", "id": "bit127", "dir": "output", "default": "0"},
+                {"pin": "16", "id": "bit128", "dir": "output", "default": "0"}
+             ]
+		}
+    ],
+    
+    "buses": [
+        {"bus": "i2c", "id": "ps_i2c_0", "path":"i2c-0", "rate": "100000"},
+        {"bus": "i2c", "id": "ps_i2c_1", "path":"i2c-1", "rate": "100000"},
+
+        {"bus": "uart", "id": "UUT_UART", "path": "AXI4_UUT_UART", "ipcore": "Axi4Uart", "port":7640,
+			"baudrate": "115200", "databits": "8", "stopbits":"1", "parity":"none", "timestamp":"none"
+		},
+
+        {"bus": "uart", "id": "SPAM_UART", "path": "AXI4_SPAM_UART", "ipcore": "Axi4Uart", "port":7641, 
+			"baudrate": "115200", "databits": "8", "stopbits":"1", "parity":"none", "timestamp":"none"
+		},
+
+        {"bus": "i2c", "id": "ELOAD_IIC", "path": "AXI4_ELOAD_IIC", "rate": "400000", "ipcore":"Axi4I2c"},
+        {"bus": "i2c", "id": "INSTRUMENT_IIC_1", "path": "AXI4_INSTRUMENT_IIC_1",  "rate": "400000", "ipcore":"Axi4I2c"},
+        {"bus": "i2c", "id": "INSTRUMENT_IIC_2", "path": "AXI4_INSTRUMENT_IIC_2",  "rate": "400000", "ipcore":"Axi4I2c"},
+        {"bus": "i2c", "id": "EEPROM_IIC", "path": "AXI4_EEPROM_IIC", "rate": "400000", "ipcore":"Axi4I2c"}
+    ],
+    
+    "digital_io": [
+        {"id": "FC_1", "ip_core": "AXI4SignalMeter"}
+	],
+
+	"network_io": [
+		{"id": "netio_1", "bit": "bit1"},
+		{"id": "netio_2", "bit": "bit2"}
+	]
+}
+
+
+

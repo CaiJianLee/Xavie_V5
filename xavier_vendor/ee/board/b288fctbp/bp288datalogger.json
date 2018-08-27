@@ -1,0 +1,18 @@
+{
+    "bp288datalogger":{
+            "partno":"bp288datalogger",
+            "name":"BP288 Datalogger Board",
+            "hardware_version":"D6.0",
+            "driver_version":"V1.0",
+
+            "hardware_profile_template":{
+                "partno": "bp288datalogger", 
+                "id": "pbdatalogger",                
+                 "daq_channel":[
+                        {"type": "datalogger", "ch": 0, "id": "current", "port": 7609, "chipnum": 1, "filters": ["output"]},
+                        {"type": "datalogger", "ch": 1, "id": "voltage", "port": 7608, "chipnum": 1, "filters": ["output"]}
+                    ],
+                "adc": {"partno": "AD7175", "path": "AXI4_AD717x_0", "samplerate": "1000Hz", "vref": "2500mV", "chipnum": 1}
+            },
+    }
+}

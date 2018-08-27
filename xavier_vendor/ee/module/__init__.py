@@ -1,0 +1,9 @@
+import ee.module.io
+import ee.module.dmm 
+import ee.module.eeprom
+import ee.module.uart
+import ee.module.i2cbus
+import ee.module.spi
+import ee.module.spi_slave
+import ee.module.hdq_slave
+import ee.module.swd

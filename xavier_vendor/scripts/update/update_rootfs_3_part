@@ -1,0 +1,177 @@
+#########################################################################
+# File Name: update_rootfs_3_part.sh
+# Author: zhen
+# mail: qingzhen.zhu@gzseeing.com 
+# Created Time: 2017年01月19日 星期四 16时14分04秒
+#########################################################################
+#!/bin/bash
+
+# 获取当前文件的目录
+LOCAL_FILE=$(cd "$(dirname "$0")";pwd)
+echo "hello update rootfs"
+
+APP_FOLDER=/mnt/opt/seeing
+
+UPDATE_FOLDE=$LOCAL_FILE
+
+return_system=0
+
+echo $LOCAL_FILE
+if [ ! -d p3 ];then
+	mkdir p3 
+fi
+mount /dev/mmcblk0p3 $UPDATE_FOLDE/p3
+if [ $? -ne 0 ];then
+	echo "mount /dev/mmcblk0p3 error"
+	exit 1
+fi
+
+
+cd $UPDATE_FOLDE/p3
+
+if [ !-f rootfs*.tar.gz ];then
+	echo "rootfs.tar.gz not exist"
+	echo "rootfs.tar.gz not exist" > $UPDATE_FOLDE/p3/update.log
+	exit 0
+else
+	echo "rootfs.tar.gz exist"
+	echo "rootfs.tar.gz exist:" > $UPDATE_FOLDE/p3/update.log
+	ls rootfs*.tar.gz  >> $UPDATE_FOLDE/p3/update.log
+	PACK_FILE="rootfs*.tar.gz"
+fi
+	
+if [  -n "$PACK_FILE" ];then
+	echo $PACK_FILE
+	pwd
+	mount /dev/mmcblk0p2 /mnt
+
+	if [ $? -ne 0 ];then
+		echo "mount /dev/mmcblk0p2 error"
+		echo "mount /dev/mmcblk0p2 error" >> $UPDATE_FOLDE/p3/update.log
+		#需要跳回到正常的系统
+
+		exit 1
+	fi
+	cd $UPDATE_FOLDE
+#备份用户文件
+	echo "backup user file"
+	cp /mnt/lost+found ./ -rf
+	cp /mnt/opt/seeing/version.txt ./ -rf
+	cd $APP_FOLDER/app
+	tar zcvf app.tar.gz *
+	cd $UPDATE_FOLDE
+	cp $APP_FOLDER/app/app.tar.gz ./ -rf
+	if [ $? -ne 0 ];then
+		cd $APP_FOLDER/app
+		tar zcvf app.tar.gz *
+		cd $UPDATE_FOLDE
+		cp $APP_FOLDER/app/app.tar.gz ./ -rf
+		if [ $? -ne 0 ];then
+			echo " backup app error"
+			echo " backup app error" >> $UPDATE_FOLDE/p3/update.log
+# 需要跳回到正常的系统
+			exit 1
+		fi
+	fi
+	
+	rm /mnt/* -rf
+	sync
+	umount /mnt
+
+
+	cd $UPDATE_FOLDE/p3
+	mount /dev/mmcblk0p2 /mnt
+	tar zxvf $PACK_FILE -C /mnt
+	if [ $? -ne 0 ];then
+		tar zxvf $PACK_FILE -C /mnt
+		if [ $? -ne 0 ];then
+			echo " tar "$PACK_FILE"　error"
+			echo " tar "$PACK_FILE"　error" >> $UPDATE_FOLDE/p3/update.log
+			exit 1
+		fi
+
+	fi
+	if [ -c /dev/mtd0 ];then
+		mkdir -p /mnt/opt/seeing/update
+		cp /dev/mtd0 /mnt/opt/seeing/update/BOOT.bin
+		cp /dev/mtd0 /mnt/opt/seeing/BOOT.bin
+		if [ $? -ne 0 ];then
+			cp /dev/mtd0 /mnt/opt/seeing/update/BOOT.bin
+			cp /dev/mtd0 /mnt/opt/seeing/BOOT.bin
+			if [ $? -ne 0 ];then
+				echo "copy BOOT.bin to \"/opt/seeing/\" error"
+				echo "copy BOOT.bin to \"/opt/seeing/\" error" >> $UPDATE_FOLDE/p3/update.log
+				exit 1
+			fi
+		fi
+	else
+		[ ! -d /tmp ] && mkdir -p /tmp
+		mount /dev/mmcblk0p1 /tmp
+		mkdir -p /mnt/opt/seeing/update
+		cp /tmp/zImage /mnt/opt/seeing/update/zImage
+		if [ $? -ne 0 ];then
+			cp /tmp/zImage /mnt/opt/seeing/update/zImage
+			if [ $? -ne 0 ];then
+				echo "copy zImage to \"/opt/seeing/update/\" error"
+				echo "copy zImage to \"/opt/seeing/update/\" error" >> $UPDATE_FOLDE/p3/update.log
+				exit 1
+			fi
+		fi
+		sync
+		umount /tmp
+	fi
+
+	cd $UPDATE_FOLDE
+#还原用户文件
+	echo "restore user file"
+	cp lost+found /mnt -rf
+	cp version.txt /mnt/opt/seeing/version.txt  -rf
+	rm $APP_FOLDER/app/* -rf
+	tar zxvf app.tar.gz -C $APP_FOLDER/app
+	if [ $? -ne 0 ];then
+		echo "open app.tar.gz error"
+		echo "open app.tar.gz error" >> $UPDATE_FOLDE/p3/update.log
+		exit 1	
+	fi
+	rm app.tar.gz
+	rm lost+found version.txt -rf
+
+	rm $UPDATE_FOLDE/p3/save_update_shell 
+	sync
+	umount /mnt
+
+	cd $UPDATE_FOLDE/p3
+	if [ -f "BOOT.bin" ];then
+		flashcp -v BOOT.bin /dev/mtd0
+		if [ $? -ne 0 ];then
+			flashcp -v BOOT.bin /dev/mtd0
+		fi
+
+		rm BOOT.bin
+		rm $PACK_FILE -rf
+		rm *.sh
+	elif [ -f "zImage" ];then
+		mount /dev/mmcblk0p1 /mnt
+		cp zImage /mnt
+		if [ $? -ne 0 ];then
+			cp zImage /mnt
+		fi
+
+		rm zImage
+		rm $PACK_FILE -rf
+		rm *.sh
+	else
+		echo "file BOOT.bin or zImage not exsit"
+		echo "file BOOT.bin or zImage not exsit" >> $UPDATE_FOLDE/p3/update.log
+		exit 1
+	fi
+	sleep 1
+	reboot
+
+else
+	echo "not have \"rootfs.tar.gz\" file, Not to upgrade the file system"
+	echo "not have \"rootfs.tar.gz\" file, Not to upgrade the file system" >> $UPDATE_FOLDE/p3/update.log
+fi
+
+
+echo "-------------------- $0 end --------------------"

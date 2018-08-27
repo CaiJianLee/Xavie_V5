@@ -1,0 +1,4 @@
+mock
+pytest
+pytest-cov
+export PYTHONPATH=$PYTHONPATH:PROJECT_PATH

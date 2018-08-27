@@ -1,0 +1,39 @@
+#Author heyueguang
+'''
+Example:
+
+{
+    "ete":{"start":"python2.7 /opt/seeing/xavier/embedded_test_engine.py", "mode":"start_monitor", "order":20, "delay":100}
+}
+
+
+Keywords  :  process name    (The Keywords in the example is ete, which the process name is ete)
+
+Field description
+start     :  How the process starts
+             (In the example, the command to start the ete process in Bash is: python2.7/opt/seeing/xavier/embedded_test_engine.py)
+
+mode      :  Monitoring mode, the following types of
+             only_start     : Just start, no monitoring.
+             only_monitor   : Do not actively start before the process starts, monitoring after the process starts
+             start_monitor  : Start and monitor
+
+order     :  Start order of the process
+             20-29 for the Xavier platform use
+             Start before Xavier platform please use 10-19
+             Start after Xavier platform please use 30-39
+delay     :  Wait time after the process started, in milliseconds
+'''
+{
+    "patch_dfu_library":{"start":"/opt/seeing/app/fwdl_config/patchdfuelf.sh", "mode":"only_start", "order":20, "delay":500},
+    "cmd1":{"start":"python2.7 /opt/seeing/app/b31_bp_1/create_cmd1.py tcp:7801", "mode":"start_monitor", "order":30, "delay":100},
+    "cmd2":{"start":"python2.7 /opt/seeing/app/b31_bp_2/create_cmd2.py tcp:7802", "mode":"start_monitor", "order":31, "delay":100},
+    "fwdl1":{"start":"python2.7 /opt/seeing/app/dut_debugger/fwdl_instruction1.py tcp:7803", "mode":"start_monitor", "order":30, "delay":100},
+    "fwdl2":{"start":"python2.7 /opt/seeing/app/dut_debugger/fwdl_instruction2.py tcp:7804", "mode":"start_monitor", "order":31, "delay":100},
+    "dfu_rpc_server1":{"start":"python2.7 /opt/seeing/app/fwdl_config/setup_server.py ch1", "mode":"start_monitor", "order":35, "delay":1000},
+    "dfu_rpc_server2":{"start":"python2.7 /opt/seeing/app/fwdl_config/setup_server.py ch2", "mode":"start_monitor", "order":35, "delay":1000},
+    "ee1":{"start":"python2.7 /opt/seeing/app/b31_bp/embedded_engine1.py", "mode":"start_monitor", "order":32, "delay":100}
+
+
+
+}

@@ -1,0 +1,16 @@
+.project
+.cproject
+.pydevproject
+.settings
+build
+Test/build
+*.cpython-3.4.pyc
+*.pyc
+.cache
+__pycache__
+.coverage
+.~lock.*
+ARM_Board_D3*.tar.gz
+.DS_Store
+.kdev4
+xavier.kdev4

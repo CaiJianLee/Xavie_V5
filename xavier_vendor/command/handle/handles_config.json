@@ -1,0 +1,14 @@
+{"cmd": "help",                 "module":"system",  "handle": "help_handle",            "description":"help info"}
+{"cmd": "net set",      "module":"system",  "handle": "net_set_handle",         "description":"net set"}
+{"cmd": "net read",         "module":"system",  "handle": "net_read_handle",    "description":"net read"}
+{"cmd": "version",      "module":"system",  "handle": "version_handle",         "description":"version information"}
+{"cmd": "arm delay",      "module":"system",  "handle": "arm_delay_handle",         "description":"set delay time"}
+{"cmd": "fpga utc read",      "module":"system",  "handle": "fpga_utc_read_handle",         "description":"read fpga utc"}
+{"cmd": "synctime",         "module":"system",  "handle": "synctime_handle",        "description":"synctime read or write"}
+{"cmd": "reset",            "module":"system",  "handle": "reset_handle",       "description":"reset the system"}
+{"cmd": "update",   "module":"system",  "handle": "update_handle",      "description":"update system"}
+{"cmd": "SG sn read",   "module":"sn",  "handle": "SG_sn_read_handle",      "description":"read board sn"}
+{"cmd": "SG sn write",   "module":"sn",  "handle": "SG_sn_write_handle",      "description":"write board sn"}
+{"cmd": "logupload open", "module":"system", "handle": "logupload_open_handle", "description":"open the log upload function"}
+{"cmd": "logupload close", "module":"system", "handle": "logupload_close_handle", "description":"close the log upload function"}
+{"cmd": "set log level", "module":"system", "handle": "log_level_handle", "description":"set log level"}

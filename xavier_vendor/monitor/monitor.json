@@ -1,0 +1,61 @@
+#Author heyueguang
+'''
+Example:
+
+{
+    "ete":{"start":"python2.7 /opt/seeing/xavier/embedded_test_engine.py", "mode":"start_monitor", "order":20, "delay":100}
+}
+
+
+Keywords  :  begin whithout';;'--process name    (The Keywords in the example is ete, which the process name is ete)
+             begin whith';;'--others config, wouldn't decode by monitor process
+
+Field description
+start     :  How the process starts
+             (In the example, the command to start the ete process in Bash is: python2.7/opt/seeing/xavier/embedded_test_engine.py)
+
+mode      :  Monitoring mode, the following types of
+             only_start     : Just start, no monitoring.
+             only_monitor   : Do not actively start before the process starts, monitoring after the process starts
+             start_monitor  : Start and monitor
+
+order     :  Start order of the process
+             20-29 for the Xavier platform use
+             Start before Xavier platform please use 10-19
+             Start after Xavier platform please use 30-39
+delay     :  Wait time after the process started, in milliseconds
+'''
+{
+    "logupload": {"start": "python2.7 /opt/seeing/app/logupload/logupload.py", "mode": "start_monitor", "order": 20, "delay": 100},
+    "ee": {"start": "python2.7 /opt/seeing/app/ee/embedded_engine.py", "mode": "start_monitor", "order": 21, "delay": 500},
+    "daq": {"start": "python2.7 /opt/seeing/app/daq/daq.py", "mode": "start_monitor", "order": 22,"delay": 100}, 
+    "cmd": {"start": "python2.7 /opt/seeing/app/command/main.py tcp:7600", "mode": "start_monitor", "order": 23,"delay": 100},
+
+    ";;log_config": {
+        "monitor": {
+            "port": 22740,
+            "level":"warning",
+            "upload":false
+        },
+        "ee": {
+            "port": 22741,
+            "level":"warning",
+            "upload":false
+        }, 
+        "daq": {
+            "port": 22742,
+            "level":"warning",
+            "upload":false
+        },
+        "cmd": {
+            "port": 22743,
+            "level":"warning",
+            "upload":false
+        },
+        "uart2net": {
+            "port": 22744,
+            "level":"warning",
+            "upload":false
+        }
+    }
+}

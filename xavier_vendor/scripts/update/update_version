@@ -1,0 +1,35 @@
+#########################################################################
+# File Name: update_version.sh
+# Author: zhen
+# mail: qingzhen.zhu@gzseeing.com 
+# Created Time: 2016年12月28日 星期三 13时48分15秒
+#########################################################################
+#!/bin/bash
+#id=`sed '/^ID=/!d;s/.*=//' config`
+#ip=`sed '/^IP=/!d;s/.*=//' config`
+#name=`sed '/^NAME=/!d;s/.*=//' config`
+
+UP_DATA_FOLDER=$1
+
+# 1. 读取升级目录中的version　
+if [ -f $UP_DATA_FOLDER/../version.txt ];then
+	while read line; do
+		eval "$line"
+	done < $UP_DATA_FOLDER/../version.txt
+else
+	touch $UP_DATA_FOLDER/../version.txt
+fi
+# 2. 读取/opt/seeing/目录中的version
+while read line; do
+	eval "$line"
+done < $UP_DATA_FOLDER/version.txt
+
+# 3. 将将最后的信息写到/opt/seeing/目录中version.txt 文件中
+echo "project=$project" > $UP_DATA_FOLDER/../version.txt 
+echo "seeing=$seeing" >> $UP_DATA_FOLDER/../version.txt
+echo "rootfs=$rootfs" >> $UP_DATA_FOLDER/../version.txt
+echo "uImage=$uImage" >> $UP_DATA_FOLDER/../version.txt
+echo "BOOT=$BOOT" >> $UP_DATA_FOLDER/../version.txt
+echo "devicetree=$devicetree" >> $UP_DATA_FOLDER/../version.txt
+echo "fpga=$fpga" >> $UP_DATA_FOLDER/../version.txt
+echo "compile_time=$compile_time" >> $UP_DATA_FOLDER/../version.txt

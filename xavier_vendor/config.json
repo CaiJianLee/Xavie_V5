@@ -1,0 +1,38 @@
+{
+	"BlackBarCode" : true,
+	"CameraAlwaysOpen" : true,
+	"Flip" : false,
+	"module_gap" : false,
+	"FocusPicNum" : 5,
+	"FrameBuffSize" : 5,
+	"FocusValue" : 85,
+	"ExposureValue" : 5,
+	"ScaleImg" : false,
+	"ScaleMin" : 70,
+	"ScaleMax" : 200,
+	"FrameWidth" : 320,
+	"FrameHeight" : 240,
+	"LogPath" : "./Log",
+	"SaveImgPath" : "./SaveImg",
+	"HubPortNum" : 4,
+    "PhysicalPort1" : 1,
+    "PhysicalPort2" : 2,
+    "PhysicalPort3" : 3,
+    "PhysicalPort4" : 4,
+    "PhysicalPort5" : 7,
+    "PhysicalPort6" : 6,
+    "PhysicalPort7" : 5,
+	"width" : 105,
+	"height" : 120,
+	"x" : 105,
+	"y" : 65,
+	"MultyServ" : true,
+	"NetPort" :
+	{
+		"6543" : "PhysicalPort1",
+		"6544" : "PhysicalPort2",
+		"6545" : "PhysicalPort3",
+		"6546" : "PhysicalPort4"
+	},
+	"Version" : "cv3_180327_v1.0"
+}

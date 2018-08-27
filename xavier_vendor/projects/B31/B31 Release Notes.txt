@@ -1,0 +1,47 @@
+-------------------------------------------------------------------
+*                  B288 Release Notes                 *
+--------------------------------------------------------------------
+//Version sequence number rule - A.BB.CC:
+    A=Frame version, B=Main version, C=Sub version
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+Version: V5.00.03
+Author : qingzhen.zhu
+Date   : 2018-05-12
+History:
+    [New Feature]:
+        Add Ds18b20 init befor read temperature.
+
+    [Fix Issue]:
+        Fix first read temprature error.
+
+    [Known Issue]:
+        None
+---------------------------------------------------------------------
+Version: V5.00.02
+Author : qingzhen.zhu
+Date   : 2018-05-12
+History:
+    [New Feature]:
+        Add swd rst ctrl set instruction to control UUT1_MCU_RESET_L pin
+
+    [Fix Issue]:
+        None
+
+    [Known Issue]:
+        None
+
+---------------------------------------------------------------------
+Version: V5.00.01
+Author : qingzhen.zhu
+Date   : 2018-05-09
+History:
+    [New Feature]:
+        first version for B31 project.
+
+    [Fix Issue]:
+        None
+
+    [Known Issue]:
+        None

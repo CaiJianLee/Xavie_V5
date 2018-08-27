@@ -1,0 +1,8 @@
+2017.09.07	:
+	API 初版
+	
+2017.09.11	:
+	1.优化Axi4Uart, 版本 1.0.1
+	2.优化Axi4Spi,  版本 1.0.1
+	3.优化Axi4I2c,  版本 1.0.1
+	4.优化Axi4L2S,  版本 1.1.0, 将函数write的输入类型由list改为bytes; 将函数read的输出类型由list改为bytes
